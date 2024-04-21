@@ -1,0 +1,38 @@
+<html>
+  <body>
+    <div>
+    <div>
+      <label>XSS Payload:</label>
+      <input id="xssPayload">
+      <button onclick=obfusXSS()>Create Payload Obfuscation that will be exectuable when normalized with argument "NFKC"</button>
+    </div>
+    <div>
+      <h1 id="obfusOutput">
+    </div>
+
+    <script>
+      function getChar(xssPayload){
+        for (let c of xssPayload) {
+          for(let i=256; i<70000; i++){
+              var _c = String.fromCharCode(i);
+              if(_c == c) continue;
+              if(_c.normalize("NFKC") === c) {
+                  return _c;
+              }
+          }
+          return '@';
+        }
+    }
+
+    function obfusXSS() {
+
+      xssPayload = document.getElementById('xssPayload').value;
+
+      obfusOutput = xssPayload.split('').map(getChar).join('')
+
+      document.getElementById('obfusOutput').innerText = obfusOutput;
+    }
+  </script>
+  </body>
+</html>
+
